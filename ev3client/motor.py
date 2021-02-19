@@ -19,8 +19,8 @@ class Motor(Device):
     #
     # Construction
     #
-    def __init__(self, device_name, driver_name, remote_ip = None, remote_port = None):
-        super(Motor, self).__init__('tacho-motor', device_name, driver_name, remote_ip, remote_port)
+    def __init__(self, device_name, driver_name, ev3_instance = None):
+        super(Motor, self).__init__('tacho-motor', device_name, driver_name, ev3_instance)
 
     #
     # count per rotation
@@ -129,8 +129,8 @@ class MediumMotor(Motor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(Motor, self).__init__('tacho-motor', device_name, MediumMotor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(Motor, self).__init__('tacho-motor', device_name, MediumMotor.DRIVER_NAME, ev3_instance)
 
 
 ################################################################################
@@ -147,5 +147,5 @@ class LargeMotor(Motor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(Motor, self).__init__('tacho-motor', device_name, LargeMotor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(Motor, self).__init__('tacho-motor', device_name, LargeMotor.DRIVER_NAME, ev3_instance)

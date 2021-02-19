@@ -33,7 +33,7 @@ def GetHandle(name):
     try:
         mode = stat.S_IMODE(os.stat(path)[stat.ST_MODE])
     except:
-        trace.trace.warning('Cannot stat', name)
+        trace.warning('Cannot stat', name)
         return None
 
     # Determine mode flags

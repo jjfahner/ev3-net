@@ -10,8 +10,8 @@ class Sensor(Device):
     #
     # Construction
     #
-    def __init__(self, device_name, driver_name, remote_ip = None, remote_port = None):
-        super(Sensor, self).__init__('lego-sensor', device_name, driver_name, remote_ip, remote_port)
+    def __init__(self, device_name, driver_name, ev3_instance = None):
+        super(Sensor, self).__init__('lego-sensor', device_name, driver_name, ev3_instance)
 
     #
     # Attributes
@@ -83,8 +83,8 @@ class ColorSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(ColorSensor, self).__init__(device_name, ColorSensor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(ColorSensor, self).__init__(device_name, ColorSensor.DRIVER_NAME, ev3_instance)
 
     #
     # color
@@ -122,8 +122,8 @@ class GyroSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(GyroSensor, self).__init__(device_name, GyroSensor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(GyroSensor, self).__init__(device_name, GyroSensor.DRIVER_NAME, ev3_instance)
 
 
 ################################################################################
@@ -150,8 +150,8 @@ class TouchSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(TouchSensor, self).__init__(device_name, TouchSensor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(TouchSensor, self).__init__(device_name, TouchSensor.DRIVER_NAME, ev3_instance)
 
 
 ################################################################################
@@ -182,5 +182,5 @@ class UltrasonicSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(UltrasonicSensor, self).__init__(device_name, UltrasonicSensor.DRIVER_NAME, remote_ip, remote_port)
+    def __init__(self, device_name, ev3_instance = None):
+        super(UltrasonicSensor, self).__init__(device_name, UltrasonicSensor.DRIVER_NAME, ev3_instance)
