@@ -3,6 +3,13 @@ import time
 
 
 #
+# Current time in ms
+#
+def __time_ms():
+    return int(round(time.time() * 1000))
+
+
+#
 # Motor class
 #
 class Motor(Device):
@@ -10,14 +17,9 @@ class Motor(Device):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, class_name, name_pattern='*'):
-        super(Motor, self).__init__(remote_ip, remote_port, class_name, name_pattern)
+    def __init__(self, remote_ip, remote_port, device_name):
+        super(Motor, self).__init__(remote_ip, remote_port, 'tacho-motor', device_name)
         #if self.driver_name != 'lego-ev3-m-motor':
-
-    #
-    # command
-    #
-    command = property(fset = lambda self, value : self.set_attribute('command', value))
 
     #
     # count per rotation

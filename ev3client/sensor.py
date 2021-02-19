@@ -1,9 +1,46 @@
 from ev3client.device import Device
 
+
+#
+# Sensor base class
+#
+class Sensor(Device):
+
+    #
+    # Construction
+    #
+    def __init__(self, remote_ip, remote_port, name_pattern='*'):
+        super(Sensor, self).__init__(remote_ip, remote_port, 'lego-sensor', name_pattern)
+
+
+    #
+    # Attributes
+    #
+    decimals    = property(fget = lambda self : self.get_cached_attribute('decimals'))
+    mode        = property(fget = lambda self : self.get_attribute('mode'), fset = lambda self, mode : self.set_attribute('mode', mode))
+    modes       = property(fget = lambda self : self.get_cached_attribute('modes'))
+    num_values  = property(fget = lambda self : int(self.get_attribute('num_values')))
+
+    #
+    # Value
+    #
+    def value(self, index = 0):
+        return self.get_attribute_int('value' + str(index))
+
+    #
+    # Get all values
+    #
+    def get_values(self):
+        values = []
+        for i in range(0, self.num_values):
+            values.append(self.value(i))
+        return values
+    values = property(fget = lambda self : self.get_values())
+
 #
 # Color sensor
 #
-class ColorSensor(Device):
+class ColorSensor(Sensor):
 
     #
     # Mode strings
@@ -39,8 +76,8 @@ class ColorSensor(Device):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, class_name, name_pattern='*'):
-        super(ColorSensor, self).__init__(remote_ip, remote_port, class_name, name_pattern)
+    def __init__(self, remote_ip, remote_port, device_name):
+        super(ColorSensor, self).__init__(remote_ip, remote_port, device_name)
         if self.driver_name != 'lego-ev3-color':
             raise ValueError('Sensor is not a color sensor')
 
@@ -49,37 +86,32 @@ class ColorSensor(Device):
     #
     color = property(fget = lambda self : self.value())
 
-    #
-    # Value
-    #
-    def value(self, index = 0):
-        return self.get_attribute_int('value' + str(index))
+
+#
+# Gyro sensor
+#
+class GyroSensor(Sensor):
 
     #
-    # Get all values
+    # Mode strings
     #
-    def get_values(self):
-        values = []
-        for i in range(0, self.num_values):
-            values.append(self.value(i))
-        return values
-    values = property(fget = lambda self : self.get_values())
+    MODE_GYRO_ANG   = 'GYRO-ANG'
+    MODE_GYRO_RATE  = 'GYRO-RATE'
+    MODE_GYRO_FAS   = 'GYRO-FAS'
+    MODE_GYRO_GA    = 'GYRO-G&A'
+    MODE_GYRO_CAL   = 'GYRO-CAL'
+    MODE_TILT_RATE  = 'TILT-RATE' 
+    MODE_TILT_ANG   = 'TILT-ANG'
 
     #
-    # Set mode
+    # Mode list
     #
-    def set_mode(self, value):
-        self.set_attribute('mode', value)
-        self.clear_cached_attribute('num_values')
+    Modes = (MODE_GYRO_ANG, MODE_GYRO_RATE, MODE_GYRO_FAS, MODE_GYRO_GA, MODE_GYRO_CAL, MODE_TILT_RATE, MODE_TILT_ANG) 
 
     #
-    # Mode property
+    # Construction
     #
-    mode = property(
-        fget = lambda self : self.get_attribute('mode'), 
-        fset = lambda self, mode : self.set_mode(mode))
-
-    #
-    # Get number of values
-    #
-    num_values = property(fget = lambda self : int(self.get_cached_attribute('num_values')))
+    def __init__(self, remote_ip, remote_port, device_name):
+        super(GyroSensor, self).__init__(remote_ip, remote_port, device_name)
+        if self.driver_name != 'lego-ev3-gyro':
+            raise ValueError('Sensor is not a gyro sensor')

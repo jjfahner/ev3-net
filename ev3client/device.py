@@ -7,13 +7,6 @@ import time
 
 
 #
-# Current time in ms
-#
-def __time_ms():
-    return int(round(time.time() * 1000))
-
-
-#
 # Class representing a remote EV3
 #
 class RemoteEV3:
@@ -64,14 +57,12 @@ class RemoteEV3:
         self.recv_buffer = bytes()
         self.__connect()
 
-
     #
     # Determine name to use for a specific device
     #
-    def get_name(self, class_name, name_pattern='*'):
-        self.__send_packet('name' + ':' + class_name + ':' + name_pattern)
+    def get_name(self, class_name, device_name):
+        self.__send_packet('name' + ':' + class_name + ':' + device_name)
         return self.__recv_packet().decode()
-
 
     #
     # Get an attribute
@@ -87,7 +78,6 @@ class RemoteEV3:
         if not isinstance(value, str):
             value = str(value)
         self.__send_packet('set:' + name + '/' + attribute + ':' + value)
-
 
     #
     # Send packet
@@ -154,9 +144,9 @@ class Device:
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, class_name, name_pattern='*'):        
+    def __init__(self, remote_ip, remote_port, class_name, device_name):        
         self._ev3   = RemoteEV3.get_instance(remote_ip, remote_port)
-        self._name  = self._ev3.get_name(class_name, name_pattern='*')
+        self._name  = self._ev3.get_name(class_name, device_name)
         self._cache = {}
 
     #
@@ -196,9 +186,10 @@ class Device:
         self._cache.pop(attribute, None)
 
     #
-    # Standard attributes
+    # Attributes
     #
     address     = property(fget = lambda self : self.get_cached_attribute('address'))
+    command     = property(fset = lambda self, value : self.set_attribute('command', value))
     commands    = property(fget = lambda self : self.get_cached_attribute('commands'))
     driver_name = property(fget = lambda self : self.get_cached_attribute('driver_name'))
 

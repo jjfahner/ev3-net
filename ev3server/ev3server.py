@@ -48,47 +48,6 @@ trace_warning   = lambda *args, **kwargs : trace(TRACE_LEVEL_WARNING, *args, **k
 trace_info      = lambda *args, **kwargs : trace(TRACE_LEVEL_INFO, *args, **kwargs)
 trace_verbose   = lambda *args, **kwargs : trace(TRACE_LEVEL_VERBOSE, *args, **kwargs)
 
-# -----------------------------------------------------------------------------
-def list_device_names(class_path, name_pattern, **kwargs):
-    """
-    This is a generator function that lists names of all devices matching the
-    provided parameters.
-
-    Parameters:
-        class_path: class path of the device, a subdirectory of /sys/class.
-            For example, '/sys/class/tacho-motor'.
-        name_pattern: pattern that device name should match.
-            For example, 'sensor*' or 'motor*'. Default value: '*'.
-        keyword arguments: used for matching the corresponding device
-            attributes. For example, address='outA', or
-            driver_name=['lego-ev3-us', 'lego-nxt-us']. When argument value
-            is a list, then a match against any entry of the list is
-            enough.
-    """
-
-    if not os.path.isdir(class_path):
-        return
-
-    def matches(attribute, pattern):
-        try:
-            with io.FileIO(attribute) as f:
-                value = f.read().strip().decode()
-        except Exception:
-            return False
-
-        if isinstance(pattern, list):
-            return any([value.find(p) >= 0 for p in pattern])
-        else:
-            return value.find(pattern) >= 0
-
-    ld = os.listdir(class_path)
-
-    for f in ld:
-        if fnmatch.fnmatch(f, name_pattern):
-            path = class_path + '/' + f
-            if all([matches(path + '/' + k, kwargs[k]) for k in kwargs]):
-                yield f
-                
 #
 # Retrieve a handle
 #
@@ -194,27 +153,20 @@ def WriteCommand(name, cmd):
 def ExecName(sock, parts):
 
     class_name = parts[1]
-    name_pattern = parts[2]
+    name_pattern = ':' + parts[2]
 
-    path_root = '/sys/class/'
-    classpath = abspath(path_root + class_name)
-    match_expr = re.compile(r'^.*(\d+)$')
+    path_root  = '/sys/class/'
+    class_path = abspath(path_root + class_name)
 
-    if False:
-        path = classpath + '/' + name_pattern
-    else:
-        try:
-            name = next(list_device_names(classpath, name_pattern))
-            path = classpath + '/' + name
-        except StopIteration:
-            path = None
-            trace_warning('Cannot find device', class_name, name_pattern)
-    
-    # Either strip prefix, reset to None
-    if len(path_root) > 0:
-        name = path[len(path_root):]
-    else:
-        name = None
+    for subdir in os.listdir(class_path):
+        device_path = class_path + '/' + subdir
+        trace_verbose(device_path)
+        with io.FileIO(device_path + '/address') as f:
+            address = f.read().strip().decode()
+        if address.endswith(name_pattern):
+            name = class_name + '/' + subdir
+            trace_verbose('return', name)
+            break
 
     # Send name back to client
     return SendCommand(sock, name)
