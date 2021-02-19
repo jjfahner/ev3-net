@@ -36,21 +36,30 @@ class RemoteEV3:
 
 
     #
-    # Get a remote EV3 instance for a specific IP and port
+    # Get a remote EV3 instance for a specific IP and port, or the default
     #
     @staticmethod
     def get_instance(remote_ip, remote_port):
+        
+        # If empty, use the default instance
+        if remote_ip == None:
+            instance = RemoteEV3.get_default_instance()
+        else:
+            # Combine ip and port into key and find existing instance
+            key = remote_ip + ':' + str(remote_port)
+            instance = RemoteEV3.__instance_dict.get(key)
 
-        # Combine ip and port into key and find existing instance
-        key = remote_ip + ':' + str(remote_port)
-        val = RemoteEV3.__instance_dict.get(key)
+            # If not found, create an instance and cache it
+            if instance == None:
+                instance = RemoteEV3(remote_ip, remote_port)
+                RemoteEV3.__instance_dict[key] = instance
 
-        # If not found, create an instance and cache it
-        if val == None:
-            val = RemoteEV3(remote_ip, remote_port)
-            RemoteEV3.__instance_dict[key] = val
+        # If no instance, fail
+        if instance == None:
+            raise ValueError('No IP address specified, and no default instance available')
 
-        return val
+        # Return the instance
+        return instance
 
     #
     # Get the default instance
@@ -173,8 +182,8 @@ class Device:
         # Initialize attribute cache
         self._cache = {}
 
-        # Get remote EV3 instance for this ip/port combination
-        self._ev3 = RemoteEV3.get_default_instance() if remote_ip == None else RemoteEV3.get_instance(remote_ip, remote_port)
+        # Get remote EV3 instance
+        self._ev3 = RemoteEV3.get_instance(remote_ip, remote_port)
         
         # Get name, then match the driver name 
         self._name  = self._ev3.get_name(class_name, device_name)
