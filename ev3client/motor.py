@@ -148,4 +148,4 @@ class LargeMotor(Motor):
     # Construction
     #
     def __init__(self, device_name, remote_ip = None, remote_port = None):
-        super(Motor, self).__init__('tacho-motor', device_name, LargeMotor.driver_name, remote_ip, remote_port)
+        super(Motor, self).__init__('tacho-motor', device_name, LargeMotor.DRIVER_NAME, remote_ip, remote_port)

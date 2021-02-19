@@ -13,7 +13,6 @@ class Sensor(Device):
     def __init__(self, device_name, driver_name, remote_ip = None, remote_port = None):
         super(Sensor, self).__init__('lego-sensor', device_name, driver_name, remote_ip, remote_port)
 
-
     #
     # Attributes
     #
@@ -141,18 +140,12 @@ class TouchSensor(Sensor):
     #
     # Mode strings
     #
-    MODE_GYRO_ANG   = 'GYRO-ANG'
-    MODE_GYRO_RATE  = 'GYRO-RATE'
-    MODE_GYRO_FAS   = 'GYRO-FAS'
-    MODE_GYRO_GA    = 'GYRO-G&A'
-    MODE_GYRO_CAL   = 'GYRO-CAL'
-    MODE_TILT_RATE  = 'TILT-RATE' 
-    MODE_TILT_ANG   = 'TILT-ANG'
+    MODE_TOUCH      = 'TOUCH'
 
     #
     # Mode list
     #
-    Modes = (MODE_GYRO_ANG, MODE_GYRO_RATE, MODE_GYRO_FAS, MODE_GYRO_GA, MODE_GYRO_CAL, MODE_TILT_RATE, MODE_TILT_ANG) 
+    Modes = (MODE_TOUCH) 
 
     #
     # Construction
@@ -175,18 +168,16 @@ class UltrasonicSensor(Sensor):
     #
     # Mode strings
     #
-    MODE_GYRO_ANG   = 'GYRO-ANG'
-    MODE_GYRO_RATE  = 'GYRO-RATE'
-    MODE_GYRO_FAS   = 'GYRO-FAS'
-    MODE_GYRO_GA    = 'GYRO-G&A'
-    MODE_GYRO_CAL   = 'GYRO-CAL'
-    MODE_TILT_RATE  = 'TILT-RATE' 
-    MODE_TILT_ANG   = 'TILT-ANG'
+    MODE_US_DIST_CM = 'US-DIST-CM'
+    MODE_US_DIST_IN = 'US-DIST-IN'
+    MODE_US_SI_CM   = 'US-SI-CM'
+    MODE_US_SI_IN   = 'US-SI-IN'
+    MODE_US_LISTEN  = 'US-LISTEN'
 
     #
     # Mode list
     #
-    Modes = (MODE_GYRO_ANG, MODE_GYRO_RATE, MODE_GYRO_FAS, MODE_GYRO_GA, MODE_GYRO_CAL, MODE_TILT_RATE, MODE_TILT_ANG) 
+    Modes = (MODE_US_DIST_CM, MODE_US_DIST_IN, MODE_US_SI_CM, MODE_US_SI_IN, MODE_US_LISTEN) 
 
     #
     # Construction
