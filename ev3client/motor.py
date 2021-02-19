@@ -2,6 +2,7 @@ from ev3client.device import Device
 import time
 
 
+################################################################################
 #
 # Current time in ms
 #
@@ -9,6 +10,7 @@ def __time_ms():
     return int(round(time.time() * 1000))
 
 
+################################################################################
 #
 # Motor class
 #
@@ -17,9 +19,8 @@ class Motor(Device):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, device_name):
-        super(Motor, self).__init__(remote_ip, remote_port, 'tacho-motor', device_name)
-        #if self.driver_name != 'lego-ev3-m-motor':
+    def __init__(self, device_name, driver_name, remote_ip = None, remote_port = None):
+        super(Motor, self).__init__('tacho-motor', device_name, driver_name, remote_ip, remote_port)
 
     #
     # count per rotation
@@ -114,3 +115,37 @@ class Motor(Device):
                 time.sleep(0.0001 * sleep_time)
 
 
+################################################################################
+#
+# Medium motor class
+#
+class MediumMotor(Motor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME = 'lego-ev3-m-motor'
+
+    #
+    # Construction
+    #
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(Motor, self).__init__('tacho-motor', device_name, MediumMotor.DRIVER_NAME, remote_ip, remote_port)
+
+
+################################################################################
+#
+# Large motor class
+#
+class LargeMotor(Motor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME = 'lego-ev3-l-motor'
+
+    #
+    # Construction
+    #
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(Motor, self).__init__('tacho-motor', device_name, LargeMotor.driver_name, remote_ip, remote_port)

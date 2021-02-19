@@ -1,6 +1,7 @@
 from ev3client.device import Device
 
 
+################################################################################
 #
 # Sensor base class
 #
@@ -9,8 +10,8 @@ class Sensor(Device):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, name_pattern='*'):
-        super(Sensor, self).__init__(remote_ip, remote_port, 'lego-sensor', name_pattern)
+    def __init__(self, device_name, driver_name, remote_ip = None, remote_port = None):
+        super(Sensor, self).__init__('lego-sensor', device_name, driver_name, remote_ip, remote_port)
 
 
     #
@@ -37,10 +38,17 @@ class Sensor(Device):
         return values
     values = property(fget = lambda self : self.get_values())
 
+
+################################################################################
 #
 # Color sensor
 #
 class ColorSensor(Sensor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME         = 'lego-ev3-color'
 
     #
     # Mode strings
@@ -76,10 +84,8 @@ class ColorSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, device_name):
-        super(ColorSensor, self).__init__(remote_ip, remote_port, device_name)
-        if self.driver_name != 'lego-ev3-color':
-            raise ValueError('Sensor is not a color sensor')
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(ColorSensor, self).__init__(device_name, ColorSensor.DRIVER_NAME, remote_ip, remote_port)
 
     #
     # color
@@ -87,10 +93,16 @@ class ColorSensor(Sensor):
     color = property(fget = lambda self : self.value())
 
 
+################################################################################
 #
 # Gyro sensor
 #
 class GyroSensor(Sensor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME         = 'lego-ev3-gyro'
 
     #
     # Mode strings
@@ -111,7 +123,73 @@ class GyroSensor(Sensor):
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, device_name):
-        super(GyroSensor, self).__init__(remote_ip, remote_port, device_name)
-        if self.driver_name != 'lego-ev3-gyro':
-            raise ValueError('Sensor is not a gyro sensor')
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(GyroSensor, self).__init__(device_name, GyroSensor.DRIVER_NAME, remote_ip, remote_port)
+
+
+################################################################################
+#
+# Touch sensor
+#
+class TouchSensor(Sensor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME     = 'lego-ev3-touch'
+
+    #
+    # Mode strings
+    #
+    MODE_GYRO_ANG   = 'GYRO-ANG'
+    MODE_GYRO_RATE  = 'GYRO-RATE'
+    MODE_GYRO_FAS   = 'GYRO-FAS'
+    MODE_GYRO_GA    = 'GYRO-G&A'
+    MODE_GYRO_CAL   = 'GYRO-CAL'
+    MODE_TILT_RATE  = 'TILT-RATE' 
+    MODE_TILT_ANG   = 'TILT-ANG'
+
+    #
+    # Mode list
+    #
+    Modes = (MODE_GYRO_ANG, MODE_GYRO_RATE, MODE_GYRO_FAS, MODE_GYRO_GA, MODE_GYRO_CAL, MODE_TILT_RATE, MODE_TILT_ANG) 
+
+    #
+    # Construction
+    #
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(TouchSensor, self).__init__(device_name, TouchSensor.DRIVER_NAME, remote_ip, remote_port)
+
+
+################################################################################
+#
+# Ultrasonic sensor
+#
+class UltrasonicSensor(Sensor):
+
+    #
+    # Driver name
+    #
+    DRIVER_NAME         = 'lego-nxt-us'
+
+    #
+    # Mode strings
+    #
+    MODE_GYRO_ANG   = 'GYRO-ANG'
+    MODE_GYRO_RATE  = 'GYRO-RATE'
+    MODE_GYRO_FAS   = 'GYRO-FAS'
+    MODE_GYRO_GA    = 'GYRO-G&A'
+    MODE_GYRO_CAL   = 'GYRO-CAL'
+    MODE_TILT_RATE  = 'TILT-RATE' 
+    MODE_TILT_ANG   = 'TILT-ANG'
+
+    #
+    # Mode list
+    #
+    Modes = (MODE_GYRO_ANG, MODE_GYRO_RATE, MODE_GYRO_FAS, MODE_GYRO_GA, MODE_GYRO_CAL, MODE_TILT_RATE, MODE_TILT_ANG) 
+
+    #
+    # Construction
+    #
+    def __init__(self, device_name, remote_ip = None, remote_port = None):
+        super(UltrasonicSensor, self).__init__(device_name, UltrasonicSensor.DRIVER_NAME, remote_ip, remote_port)

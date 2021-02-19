@@ -97,6 +97,9 @@ def GetHandle(name):
 # Send command to client
 #
 def SendCommand(sock, cmd):
+    if cmd == None:
+        cmd = str()
+
     data = (len(cmd) + 4).to_bytes(4, byteorder='little') + cmd.encode()
     try:
         sock.sendall(data)
@@ -158,12 +161,16 @@ def ExecName(sock, parts):
     path_root  = '/sys/class/'
     class_path = abspath(path_root + class_name)
 
+    name = ''
     for subdir in os.listdir(class_path):
+        
         device_path = class_path + '/' + subdir
         trace_verbose(device_path)
+        
         with io.FileIO(device_path + '/address') as f:
             address = f.read().strip().decode()
-        if address.endswith(name_pattern):
+        
+        if name_pattern in address:
             name = class_name + '/' + subdir
             trace_verbose('return', name)
             break

@@ -6,6 +6,7 @@ import socket
 import time
 
 
+################################################################################
 #
 # Class representing a remote EV3
 #
@@ -29,6 +30,12 @@ class RemoteEV3:
 
 
     #
+    # Default instance, used if no connection details are supplied to a device
+    #
+    __default_instance = None
+
+
+    #
     # Get a remote EV3 instance for a specific IP and port
     #
     @staticmethod
@@ -45,6 +52,19 @@ class RemoteEV3:
 
         return val
 
+    #
+    # Get the default instance
+    #
+    @staticmethod
+    def get_default_instance():
+        return RemoteEV3.__default_instance
+
+    #
+    # Set the default instance
+    #
+    @staticmethod
+    def set_default_instance(remote_ip, remote_port):
+        RemoteEV3.__default_instance = RemoteEV3.get_instance(remote_ip, remote_port)
 
     #
     # Construction
@@ -62,7 +82,10 @@ class RemoteEV3:
     #
     def get_name(self, class_name, device_name):
         self.__send_packet('name' + ':' + class_name + ':' + device_name)
-        return self.__recv_packet().decode()
+        name = self.__recv_packet().decode()
+        if len(name) < 1:
+            raise ValueError('Could not find device ' + class_name + ':' + device_name)
+        return name
 
     #
     # Get an attribute
@@ -126,6 +149,7 @@ class RemoteEV3:
         # TODO we probably want a version handshake
 
 
+################################################################################
 #
 # Class representing a remote device
 #
@@ -144,10 +168,18 @@ class Device:
     #
     # Construction
     #
-    def __init__(self, remote_ip, remote_port, class_name, device_name):        
-        self._ev3   = RemoteEV3.get_instance(remote_ip, remote_port)
-        self._name  = self._ev3.get_name(class_name, device_name)
+    def __init__(self, class_name, device_name, driver_name, remote_ip = None, remote_port = None):        
+        
+        # Initialize attribute cache
         self._cache = {}
+
+        # Get remote EV3 instance for this ip/port combination
+        self._ev3 = RemoteEV3.get_default_instance() if remote_ip == None else RemoteEV3.get_instance(remote_ip, remote_port)
+        
+        # Get name, then match the driver name 
+        self._name  = self._ev3.get_name(class_name, device_name)
+        if self.driver_name != driver_name:
+            raise ValueError('Expected driver name ' + driver_name + ', got ' + self.driver_name)
 
     #
     # Get an attribute
@@ -192,6 +224,3 @@ class Device:
     command     = property(fset = lambda self, value : self.set_attribute('command', value))
     commands    = property(fget = lambda self : self.get_cached_attribute('commands'))
     driver_name = property(fget = lambda self : self.get_cached_attribute('driver_name'))
-
-
-
