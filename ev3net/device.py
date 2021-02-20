@@ -1,8 +1,8 @@
 #
 # This is the client part of the ev3 network interface
 #
-from ev3client.local  import LocalEV3
-from ev3client.remote import RemoteEV3 
+from local  import LocalEV3
+from remote import RemoteEV3 
 
 
 ################################################################################

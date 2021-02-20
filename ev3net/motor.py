@@ -1,4 +1,4 @@
-from ev3client.device import Device
+from device import Device
 import time
 
 

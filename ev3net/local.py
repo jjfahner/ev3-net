@@ -1,7 +1,7 @@
 import io
 import os
 import stat
-from ev3client.trace import Trace
+from trace import Trace
 
 ################################################################################
 #
