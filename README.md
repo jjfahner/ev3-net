@@ -37,7 +37,7 @@ while motor.state == 'running':
   print('Sensor value:', sensor.value())
 ```
 
-To run this same program on a computer, run the ev3-net server script on a brick, and make the following change:
+To run this program from a computer, run the ev3-net server script on a brick, and make the following change:
 
 ```python
 # Setup default brick instance to be a remote brick
