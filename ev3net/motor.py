@@ -17,6 +17,35 @@ def __time_ms():
 class Motor(Device):
 
     #
+    # Command verbs
+    #
+    CMD_RUN_FOREVER        = 'run-forever'
+    CMD_RUN_TO_ABS_POS     = 'run-to-abs-pos'
+    CMD_RUN_TO_REL_POS     = 'run-to-rel-pos'
+    CMD_RUN_TIMED          = 'run-timed'
+    CMD_RUN_DIRECT         = 'run-direct'
+    CMD_STOP               = 'stop'
+    CMD_RESET              = 'reset'
+
+    #
+    # Commands as list
+    #
+    COMMANDS               = [CMD_RUN_FOREVER, CMD_RUN_TO_ABS_POS, CMD_RUN_TO_REL_POS, CMD_RUN_TIMED, CMD_RUN_DIRECT, CMD_STOP, CMD_RESET]
+
+    #
+    # State values
+    #
+    STATE_RUNNING           = 'running'
+    STATE_RAMPING           = 'ramping'
+    STATE_HOLDING           = 'holding'
+    STATE_STALLED           = 'stalled'
+
+    #
+    # States as list
+    #
+    STATES                  = [STATE_RUNNING, STATE_RAMPING, STATE_HOLDING, STATE_STALLED]
+
+    #
     # Construction
     #
     def __init__(self, device_name, driver_name, ev3_instance = None):

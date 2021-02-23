@@ -102,7 +102,7 @@ class Device:
         # Get name, then match the driver name 
         self._name  = self._ev3.get_name(class_name, device_name)
         if self.driver_name != driver_name:
-            raise ValueError('Expected driver name ' + driver_name + ', got ' + self.driver_name)
+            raise ValueError('Expected driver name ' + str(driver_name) + ', got ' + str(self.driver_name))
 
     #
     # Get an attribute
