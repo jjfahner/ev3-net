@@ -12,6 +12,28 @@ from remote import RemoteEV3
 class EV3:
 
     #
+    # Inputs
+    #
+    IN_1 = 'in1'
+    IN_2 = 'in2'
+    IN_3 = 'in3'
+    IN_4 = 'in4'
+
+    #
+    # Outputs
+    #
+    OUT_A = 'outA'
+    OUT_B = 'outB'
+    OUT_C = 'outC'
+    OUT_D = 'outD'
+
+    #
+    # Inputs and outputs as arrays
+    #
+    INPUTS  = [ IN_1,  IN_2,  IN_3,  IN_4  ]
+    OUTPUTS = [ OUT_A, OUT_B, OUT_C, OUT_D ]
+    
+    #
     # Dictionary holding instances of remote EV3s
     #
     __instance_dict = { }
