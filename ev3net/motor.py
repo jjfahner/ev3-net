@@ -118,6 +118,11 @@ class Motor(Device):
         if wait:
             self.wait()
 
+    #
+    # Stop the motor
+    #
+    def stop(self):
+        self.command = 'stop'
 
     #
     # Wait

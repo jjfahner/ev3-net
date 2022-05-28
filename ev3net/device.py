@@ -91,7 +91,7 @@ class Device:
     #
     # Construction
     #
-    def __init__(self, class_name, device_name, driver_name, ev3_instance = None):        
+    def __init__(self, class_name, device_name, driver_name = None, ev3_instance = None):        
         
         # Initialize attribute cache
         self._cache = {}
@@ -101,8 +101,13 @@ class Device:
         
         # Get name, then match the driver name 
         self._name  = self._ev3.get_name(class_name, device_name)
-        if self.driver_name != driver_name:
+        if not driver_name is None and self.driver_name != driver_name:
             raise ValueError('Expected driver name ' + str(driver_name) + ', got ' + str(self.driver_name))
+
+    #
+    # Get name
+    #
+    name = property(fget = lambda self : self._name)
 
     #
     # Get an attribute

@@ -5,6 +5,8 @@
 #
 from connection import Connection
 from local import LocalEV3
+from device import Device
+from motor import Motor
 from trace import Trace
 
 #
@@ -62,6 +64,9 @@ class Server:
             
             # Connection failed
             Trace.Info('Connection closed')
+
+            # Reset the ev3
+            self.reset()
             
 
     #
@@ -110,6 +115,17 @@ class Server:
         val  = msg_parts[3] 
         self._ev3.set_attribute(name, attr, val)
 
+    #
+    # Reset the ev3
+    # - Stop motors
+    #
+    def reset(self):
+        for i in range(0, 4):
+            port_name = 'out' + 'ABCD'[i]
+            device = Device('tacho-motor', port_name, None, self._ev3)
+            if not device.name is None and 'motor' in device.driver_name:
+                Trace.Info('Stopping motor', port_name)
+                device.command = 'stop'
 
 #
 # Run server as script
