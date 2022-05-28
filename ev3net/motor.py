@@ -17,6 +17,11 @@ def __time_ms():
 class Motor(Device):
 
     #
+    # Device type
+    #
+    CLASS_NAME             = 'tacho_motor'
+
+    #
     # Command verbs
     #
     CMD_RUN_FOREVER        = 'run-forever'
@@ -49,7 +54,7 @@ class Motor(Device):
     # Construction
     #
     def __init__(self, device_name, driver_name, ev3_instance = None):
-        super(Motor, self).__init__('tacho-motor', device_name, driver_name, ev3_instance)
+        super(Motor, self).__init__(Motor.CLASS_NAME, device_name, driver_name, ev3_instance)
 
     #
     # count per rotation
