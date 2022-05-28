@@ -125,6 +125,14 @@ class GyroSensor(Sensor):
     def __init__(self, device_name, ev3_instance = None):
         super(GyroSensor, self).__init__(device_name, GyroSensor.DRIVER_NAME, ev3_instance)
 
+    #
+    # Calibrate sensor
+    #
+    def calibrate(self):
+        mode = 'GYRO-CAL'
+        mode = 'GYRO-ANG'
+
+
 
 ################################################################################
 #
